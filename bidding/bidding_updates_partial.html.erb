@@ -1,0 +1,17 @@
+<div class="last_log_in">
+	<%= content_tag :li, "Since you last logged in" %>
+	<%= content_tag :li, current_user.last_sign_in_at.strftime("%b %d at %I:%M %p") %>
+</div>
+
+<!-- found in h's/s_h.rb -->
+<!-- mstats is an instance var of MarketStats.new(current_user)  -->
+<% non_products = %w(:new_products :new_members :new_retailers) %>
+<% mStats.feed.each do |item| %>
+	<% string = item.to_s.gsub('_', ' ') %>
+	<% if mStats.query_count(item) > 0 %>
+		<%= link_to( {:controller => "sides", :action => "update_query", id: item, count: mStats.query_count(item) }, remote: true)  do %>
+					<%= content_tag :div, "#{string} +#{mStats.query_count(item)}", :id => item, class: "side_tab" %>
+					<%= content_tag :div, "your products +#{mStats.query_count(item)}" unless non_products.include?(item) %>
+			<% end %>
+	<% end %>
+<% end %>
