@@ -12,31 +12,31 @@ class MarketStats
 	end
 
 	def new_bids
-		Bid.where('created_at > ? AND price IS NOT NULL', @user.last_sign_in_at)
+		Bid.last_sign_in_at(@user).live_bid
 	end
 
 	def new_watches(extra = nil)
-		Bid.where('(created_at > ? or updated_at > ?)', @user.last_sign_in_at, @user.last_sign_in_at).where('price IS NULL')
+		Bid.last_sign_in_at(@user).just_watching
 	end
 
 	def new_adv_prices 
-		Offer.where('created_at > ?', @user.last_sign_in_at).where('price IS NOT NULL')
+		Offer.last_sign_in_at(@user).live_bid
 	end
 
 	def new_deals 
-		Deal.where('created_at > ?', @user.last_sign_in_at).where('price IS NOT NULL')
+		Deal.last_sign_in_at(@user).live_bid
 	end
 
 	def new_products 
-		Product.where('created_at > ?', @user.last_sign_in_at)
+		Product.last_sign_in_at(@user)
 	end
 
 	def new_members 
-		User.where('created_at > ?', @user.last_sign_in_at)
+		User.last_sign_in_at(@user)
 	end
 
 	def new_retailers 
-		Retailer.where('created_at > ?', @user.last_sign_in_at)
+		Retailer.last_sign_in_at(@user)
 	end
 
 	def run_query
